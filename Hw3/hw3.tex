@@ -1,0 +1,340 @@
+%\documentclass[journal,onecolumn]{IEEEtran}
+\documentclass[journal]{IEEEtran}
+\usepackage{color}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{verbatim}   
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\usepackage{fontspec}  
+\usepackage{xeCJK}       
+\setCJKmainfont{標楷體} 
+% below are for changing line automatically
+\XeTeXlinebreaklocale "zh"             
+\XeTeXlinebreakskip = 0pt plus 1pt     
+
+\begin{document}
+
+
+\title{Advanced Integrated Circuit Design Homework 3} 
+
+\author{B03901026 許凱傑}
+
+ 
+%\markboth{Draft}{}
+
+\maketitle 
+
+\baselineskip 0.3in
+
+\section{Question 1}
+Plot the TIA/EIA-568-A worst-case propagation loss and pair-to-pair NEXT lost as shown in Fig.3 \cite{REF1}.
+For easy demonstration, we may extend the frequency range to 30M, 100M, 100M for CAT-3, 4,5 cables, respectively.
+
+Fig. \ref{fig1} shows the propagation loss and NEXT loss of CAT3, 4 and 5 cables from Table. \ref{tab1} and \ref{tab2}.
+
+\begin{table}[!htbp]
+\centering
+\caption{Propagation loss $L_P(f)$} 
+\begin{tabular}{| c | c |}
+\hline	
+CABLE & $L_P(f)$ in dB per 100 m \\
+\hline
+CAT 3 & $2.320 \sqrt{f} + 0.238 f$ \\
+\hline
+CAT 4 & $2.050 \sqrt{f} + 0.043 f + 0.057 / \sqrt{f}$ \\
+\hline
+CAT 5 & $1.967 \sqrt{f} + 0.023 f + 0.050 / \sqrt{f}$ \\
+\hline
+\end{tabular}
+\\
+\label{tab1}
+\end{table}
+
+\begin{table}[!htbp]
+\centering
+\caption{NEXT loss $L_N(f)$, where $f_0$ = 0.772 MHz} 
+\begin{tabular}{| c | c |}
+\hline	
+CABLE & $L_N(f)$ in dB \\
+\hline
+CAT 3 & $43 - 15 log(f/f_0)$ \\
+\hline
+CAT 4 & $58 - 15 log(f/f_0)$ \\
+\hline
+CAT 5 & $64 - 15 log(f/f_0)$ \\
+\hline
+\end{tabular}
+\\
+\label{tab2}
+\end{table}
+
+\begin{figure}[!htbp]
+\center
+\includegraphics[height=5cm]{fig/Q1.eps}
+\caption{
+{\color{red} ---} : Insertion loss of cat3;
+{\color{red} - - -} : NEXT loss of cat3;
+{\color{blue} ---} : Insertion loss of cat4;
+{\color{blue} - - -} : NEXT loss of cat4;
+--- : Insertion loss of cat5;
+and - - - : NEXT loss of cat5.
+}
+\label{fig1}
+\end{figure}
+
+\section{Question 2}
+Plot the time-domain impulse response, as well as the frequency response of the square-root raised-cosine Baseband shaping filter, g(t), for $\alpha$ = 0, 0.25, 0.5, 0.75, and 1.0.
+
+Fig. \ref{fig2} shows g(t) and Fig. \ref{fig3} shows the frequency-domain of the g(t), denoted as G(f), where g(t) is expressed as
+\begin{eqnarray}
+&& g(t) = \left\{
+\begin{array}{ll}
+\frac{\sin(\pi(1-\alpha)t') + 4\alpha t' \cos(\pi(1+\alpha)t')}{\pi t' [1-(4\alpha t')^2]} & ,t' \neq 0
+\\ \\
+\frac{\pi (1 -\alpha) + 4 \alpha}{\pi} & ,t' = 0
+\end{array}
+\right.
+\end{eqnarray}
+and G(f) as
+\begin{eqnarray}
+&& G(f) = \left\{
+\begin{array}{ll}
+T & ,0 \leq |f| \leq \frac{1}{2T}(1-\alpha) \\
+\frac{T}{\sqrt{2}} & ,\frac{1}{2T}(1-\alpha) \leq |f| \leq \frac{1}{2T}(1+\alpha) \\
+0 & ,else
+\end{array}
+\right.
+\end{eqnarray}
+
+\begin{figure}[!htbp]
+\center
+\includegraphics[height=5cm]{fig/Q2-1.eps}
+\caption{Time-domain of the square-root raised-cosine Baseband shaping filter, g(t),
+--- : $\alpha = 0$
+{\color{red} ---} : $\alpha = 0.25$;
+{\color{blue} ---} : $\alpha = 0.5$;
+{\color{green} ---} : $\alpha = 0.75$;
+and {\color{yellow} ---} : $\alpha = 1.0$;
+.}
+\label{fig2}
+\end{figure}
+
+\begin{figure}[!htbp]
+\center
+\includegraphics[height=5cm]{fig/Q2-2.eps}
+\caption{Frequency-domain of the square-root raised-cosine Baseband shaping filter, G(f),
+--- : $\alpha = 0$
+{\color{red} ---} : $\alpha = 0.25$;
+{\color{blue} ---} : $\alpha = 0.5$;
+{\color{green} ---} : $\alpha = 0.75$;
+and {\color{yellow} ---} : $\alpha = 1.0$;
+.}
+\label{fig3}
+\end{figure}
+
+\section{Question 3}
+Plot the time-domain impulse response, as well as the frequency response, of the In-Phase shaping filter ($p(t)$) and Quadrature shaping filter ($\tilde{p}(t)$). 
+Show that 
+\begin{itemize}
+\item They are Hilber pair, i.e., their Fourier transforms have the same amplitude 
+characteristics and phase characteristics that differ by 90 degrees.
+\item They are orthogonal in time domain. 
+\end{itemize}
+
+\begin{eqnarray}
+&&p(t) = g(t) cos(2\pi f_c t)
+\nonumber \\
+&&\tilde{p}(t) = g(t) sin(2\pi f_c t)
+\end{eqnarray}
+
+Fig. \ref{fig4}. and \ref{fig5}. show the amplitude and ratio of $P(f)$ and $\tilde{P}(f)$, where $P(f)$ and $\tilde{P}(f)$ are Fast Fourier Transform (FFT) of $p(t)$ and $\tilde{p}(t)$.
+It is verified the they have almost same amplitude.
+
+\begin{figure}[!tbp]
+\center
+\includegraphics[height=5cm]{fig/Q3-3-1.eps}
+\caption{FFT spectrum of
+{\color{blue} ---} : $P(f)$, In-Phase and {\color{red} ---} : $\tilde{P}(f)$, Quadrature.}
+\label{fig4}
+\end{figure}
+
+\begin{figure}[!tbp]
+\center
+\includegraphics[height=5cm]{fig/Q3-3-2.eps}
+\caption{Amplitude ratio of $P(f)$ and $\tilde{P}(f)$.}
+\label{fig5}
+\end{figure}
+
+$\newline$
+Fig. \ref{fig6}. and \ref{fig7}. show the phase and angular difference of $P(f)$ and $\tilde{P}(f)$, respectively.
+It is verified the their angular difference is of $\pi/2$.
+
+\begin{figure}[!tbp]
+\center
+\includegraphics[height=5cm]{fig/Q3-4-1.eps}
+\caption{Phase of {\color{blue} ---} : $P(f)$, In-Phase and {\color{red} ---} : $\tilde{P}(f)$, Quadrature.}
+\label{fig6}
+\end{figure}
+
+\begin{figure}[!tbp]
+\center
+\includegraphics[height=5cm]{fig/Q3-4-2.eps}
+\caption{Angular difference of $P(f)$ and $\tilde{P}(f)$.}
+\label{fig7}
+\end{figure}
+
+By Plancherel theorem
+\begin{eqnarray}
+&&\int_{-\infty}^\infty \| p(t) q^*(t) \| dx
+= \int_{-\infty}^\infty \| P(f) Q^*(f) \| df
+\end{eqnarray}
+and
+\begin{eqnarray}
+&&<u,v> \triangleq \int_{-\infty}^{\infty}u(t)v^*(t)dt,
+\end{eqnarray}
+it is easily verified $<p,\tilde{p}>$ = 0, meaning they are orthogonal in time-domain.
+Fig. \ref{fig8}. and \ref{fig9}. show the continuous-time FT (CTFT) and time-domain of $p(t)$ and $\tilde{p}(t)$.
+
+\begin{figure}[!tbp]
+\center
+\includegraphics[height=5cm]{fig/Q3-2.eps}
+\caption{CTFT of --- : baseband; {\color{blue} ---} : $P(f)$, In-Phase and {\color{red} - - -} : $\tilde{P}(f)$, Quadrature.}
+\label{fig8}
+\end{figure}
+
+\begin{figure}[!tbp]
+\center
+\includegraphics[height=5cm]{fig/Q3-1.eps}
+\caption{Time-domain of --- : $p(t)$, In-Phase and {\color{blue} ---} : $\tilde{p}(t)$, Quadrature.}
+\label{fig9}
+\end{figure}
+
+\section{Question 4}
+Plot the spectrum (0~30MHz) of the 16-CAP transmitted signal at the output of the transmitter. 
+The natural sampling rate of the D/A, A/D, and digital filters of this transceiver is four times the symbol rate, i.e., $1/T’$ = $4/T$ = 51.84MHz. 
+
+\begin{eqnarray}
+&& s(t)|_{t = kT'} = \displaystyle 
+\sum_{n = - \infty}^\infty
+\alpha_n p(t-nT) - \beta_n \tilde{p}(t-nT)
+\nonumber \\
+&& p(nT') = \displaystyle
+\frac{4}{\pi} \frac{cos^2(\frac{n\pi}{2})}{1-n^2},
+n \in \mathcal{Z}
+\nonumber \\
+&& \tilde{p}(nT') = \displaystyle
+\frac{4}{\pi} 
+\frac{cos(\frac{n\pi}{2})sin(\frac{n\pi}{2})}
+{1-n^2}, n \in \mathcal{Z}
+\label{BB signal}
+\end{eqnarray}
+
+Fig. \ref{fig10} shows the result according to (\ref{BB signal}).
+
+\begin{figure}[!htbp]
+\center
+\includegraphics[height=5cm]{fig/Q4.eps}
+\caption{Spectrum of the 16-CAP transmitted signal at the output of the transmitter.}
+\label{fig10}
+\end{figure}
+
+\section{Question 5}
+Calculate the approximate capacity of 
+the CAT3, 4, 5 cables for length of 100m and W=30MHz.
+Discuss how the Propagation Loss and NEXT will affect the 
+channel capacity. 
+
+The capacity can be approximated as 
+\begin{eqnarray}
+C_N(d,W) = \frac{W}{3} \left[ L_N(W) + \frac{15}{ln 10} -
+\frac{2\sqrt{2}}{3} L_P\left( \frac{W}{2} \right)\right]
+\label{capacity} 
+\end{eqnarray}
+
+Table. \ref{tab3}. shows result from \ref{capacity} and Table VI. in \cite{REF1}, which $C_N$ in (\ref{capacity}) has a bit higher than $C_N$ in \cite{REF1}.
+If the propagation loss becomes higher or NEXT loss becomes lower,
+the SNR will decrease due to decrease of signal power and increase of noise power, respectively.
+Therefore, capacity will decrease.
+
+\begin{table}[!htbp]
+\centering
+\caption{Capacity of cable.} 
+\begin{tabular}{| c | c | c | c |}
+\hline	
+CABLE & $C_N$ in \cite{REF1} & $C_N$ in (\ref{capacity})& W \\
+\hline
+CAT 3 & 136 Mb/s & 138 Mb/s & 30 MHz \\
+\hline
+CAT 4 & 323 Mb/s & 325 Mb/s & 30 MHz \\
+\hline
+CAT 5 & 386 Mb/s & 391 Mb/s & 30 MHz \\
+\hline
+\end{tabular}
+\\
+\label{tab3}
+\end{table}
+
+\section{Question 6}
+Briefly explain NEXT cancellation and NEXT equalization. What is the difference (at least list 3 items) between these two schemes?
+
+Fig. \ref{fig11} shows the principle of (a) NEXT cancellation (NC) and (b) NEXT equalization (NE) in \cite{REF1}.
+NEXT canceller synthesizes a replica of the NEXT interferer cancelled out by subtracting the output of the canceller from the signal appearing at the receiver or at the input of slicer.
+NEXT equalizer equalizes the interfering NEXT signal at the receiver in such a way that it passes through zero at all the sampling instants of the slicer.
+The major difference can be summarized as below
+\begin{itemize}
+\item NC requires interferer be generated by the local transmitter.
+\item NE needs excess bandwidth (with one cyclostationary NEXT interferer, excess bandwidth needs at least 100$\%$).
+\item If there are two interferer generated by the local transmitter and the transmitter of another user in the cable, NC can only handle when the first one is dominant, however, NE can handle both cases. 
+\end{itemize}
+
+\begin{figure}[!tbp]
+\center
+\includegraphics[height=5cm]{fig/9.jpg}
+\caption{Principle of (a) NEXT cancellation and (b) NEXT equalization in \cite{REF1}.}
+\label{fig11}
+\end{figure}
+
+\section{Question 7}
+Both ATM-LAN \cite{REF3} and FTTC \cite{REF2} employ 16-CAP as their line codes to transmit 51.84 Mbps data over the channel.
+However, their cabling statuses are different. 
+Also, the NEXT/FEXT considerations are different. 
+List at least 3 different design issues between the two transceiver designs even though they are using the same 16-CAP techniques. 
+
+The differences is listed as below
+\begin{itemize}
+\item Since FTTC use different frequency band for upstream and downstream, there is no NEXT interferer.
+However, ATM-LAN in \cite{REF3} uses fractionally
+spaced linear equalizer to suppress NEXT.
+\item ATM-LAN uses unshielded twisted-
+pair category three (UTP-3) user network interface (UNI)
+as cabling.
+FTTC uses optical ﬁber goes to a curbside pedestal.
+At the pedestal, the optical signal is converted into an electrical signal and then demultiplexed for delivery to individual homes on copper wiring.
+\item For FTTC system, splitters used in the in-house coaxial cabling system introduce a severe amount of propagation loss and deep notches in the channel transfer function at frequencies below 5 MHz.
+\end{itemize}
+
+\begin{thebibliography}{99}
+\bibitem{REF1}
+G.-H. Im,  D. D. Harman, G. Huang, A. V. Mandzik, 
+M.-H. Nguyen and J.-J. Werner,
+''51.84 Mb/s 16-CAP ATM LAN standard,''
+{\rm IEEE J. Select. Areas Commun.}, 
+vol. 13, pp. 620-632, Dec. 1995. 
+
+\bibitem{REF2}
+D. D. Harman, G. Huang, G. H. Im, M. H. Nguyen, J. J. Werner and M. K. Wang.,
+''Local distribution for interactive multimedia TV,''
+{\rm IEEE Multimedia Magazine},
+pp.14-23, Fall 1995. 
+
+\bibitem{REF3}
+N. R. Shanbhag and G. H. Im, 
+''VLSI Systems Design of 51.84 Mb/s Transceivers for ATM-LAN and Broadband Access,''
+{\rm IEEE Trans. Signal Processing},
+vol. 46, No. 5, pp. 1403-1416, May 1998. 
+
+\end{thebibliography}
+
+\end{document}
